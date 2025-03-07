@@ -1,5 +1,5 @@
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
-import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
+import { s3Storage } from '@payloadcms/storage-s3'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -24,17 +24,28 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: vercelPostgresAdapter({
+  db: postgresAdapter({
     pool: {
       connectionString: process.env.POSTGRES_URL || '',
     },
   }),
   plugins: [
-    vercelBlobStorage({
+    s3Storage({
       collections: {
-        media: true,
+        media: {
+          prefix: 'media',
+        },
       },
-      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+      bucket: process.env.S3_BUCKET,
+      config: {
+        forcePathStyle: true,
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID,
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+        },
+        region: process.env.S3_REGION, // e.g., 'eu-central-1'
+        endpoint: process.env.S3_ENDPOINT, // e.g., 'https://your-project-ref.supabase.co/storage/v1/s3'
+      },
     }),
   ],
 })
