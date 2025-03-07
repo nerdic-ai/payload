@@ -5,8 +5,9 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "pnpm build:packages && cross-env NODE_OPTIONS=--no-deprecation next build",
-    "build:packages": "turbo run build --filter=@payloadcms/*",
+    "build": "turbo run build:types --filter=@payloadcms/* && pnpm build:packages && cross-env NODE_OPTIONS=--no-deprecation next build",
+    "build:packages": "turbo run build --filter=@payloadcms/* --no-deps",
+    "build:types": "turbo run build:types --filter=@payloadcms/* --no-deps",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
