@@ -27,8 +27,8 @@
     "payload": "latest",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "@payloadcms/db-vercel-postgres": "latest",
-    "@payloadcms/storage-vercel-blob": "latest"
+    "@payloadcms/db-postgres": "latest",
+    "@payloadcms/storage-s3": "latest"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
